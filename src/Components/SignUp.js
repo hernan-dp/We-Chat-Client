@@ -40,7 +40,7 @@ export default class SignUp extends Component{
                   <input type="text" id="firstname" className="fadeIn first" placeholder="FirstName" onChange={this.handleChange}/>
                   <input type="text" id="lastname" className="fadeIn second" placeholder="LastName" onChange={this.handleChange}/>
                   <input type="text" id="username" className="fadeIn third" placeholder="Username" onChange={this.handleChange}/>
-                  <input type="text" id="password" className="fadeIn fourth" placeholder="Password" onChange={this.handleChange}/>
+                  <input type="password" id="password" className="fadeIn fourth" placeholder="Password" onChange={this.handleChange}/>
                   <button type="submit" className="fadeIn third" onClick={this.handleSubmit} >Sign up</button>
                 </form>
                 <Link to='/auth/signin'>

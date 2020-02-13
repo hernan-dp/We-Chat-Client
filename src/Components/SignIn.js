@@ -38,7 +38,7 @@ export default class SignIn extends Component{
                 <h1>Sign In</h1>
                 <form onSubmit={this.handleSubmit}>
                   <input type="text" id="username" className="fadeIn first" placeholder="Username" onChange={this.handleChange}/>
-                  <input type="text" id="password" className="fadeIn second" placeholder="Password" onChange={this.handleChange}/>
+                  <input type="password" id="password" className="fadeIn second" placeholder="Password" onChange={this.handleChange}/>
                   <button type="submit" className="fadeIn third" onClick={this.handleSubmit} >Login</button>
                 </form>
                 <Link to='/auth/signup'>
