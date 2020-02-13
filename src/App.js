@@ -4,14 +4,13 @@ import './App.css';
 import { Switch, Route} from 'react-router-dom'
 import SignIn from './Components/SignIn'
 import SignUp from './Components/SignUp'
-
 function App() {
   return (
     <div className="App">
-     <SignIn> </SignIn> 
       <Switch>
-          <Route exact path='/auth/signin' component={ SignIn }/>
-          <Route exact path='/auth/signup' component={ SignUp }/>
+      <Route path='/auth/signup' component={SignUp} />
+      <Route path='/auth/signin' component={SignIn} />  
+      <Route path='/' exact component={SignIn} />
       </Switch>
     </div>
   );

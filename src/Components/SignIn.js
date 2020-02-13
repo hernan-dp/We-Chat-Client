@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { Link } from 'react-router-dom'
-
+import "./Welcome.css"
 export default class SignIn extends Component{
   state = {
     username: null,
@@ -29,30 +29,26 @@ export default class SignIn extends Component{
   }
 
   render(){
-
     return (
-        <div>
-          <h2>Member login</h2>
-          <form onSubmit={this.handleSubmit}>
-          <br/>
-            <div>
-              <label>
-                <input placeholder="Usuario" type="text" id="username" onChange={this.handleChange}/>
-              </label>
+      <div className="outer">
+        <div className="middle">
+          <div className="inner">
+            <div className="wrapper fadeInDown">
+              <div id="formContent">
+                <h1>Sign In</h1>
+                <form onSubmit={this.handleSubmit}>
+                  <input type="text" id="username" className="fadeIn first" placeholder="Username" onChange={this.handleChange}/>
+                  <input type="text" id="password" className="fadeIn second" placeholder="Password" onChange={this.handleChange}/>
+                  <button type="submit" className="fadeIn third" onClick={this.handleSubmit} >Login</button>
+                </form>
+                <Link to='/auth/signup'>
+                  Don't have an account? Create one!
+                </Link>
+              </div>
             </div>
-            <div>
-              <label>
-                <input placeholder="Contraseña" type="password" id="password" onChange={this.handleChange}/>
-              </label>
-            </div>
-            <button onClick={this.handleSubmit} >Iniciar sesión</button>
-          </form>
-          <div>
-          <Link to='/auth/signup'>
-              Don't you have an account?
-          </Link>
           </div>
         </div>
+      </div>
     )
   }
 }

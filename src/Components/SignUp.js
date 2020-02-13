@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { Link } from 'react-router-dom'
-
+import "./Welcome.css"
 export default class SignUp extends Component{
   state = {
     username: null,
@@ -30,38 +30,27 @@ export default class SignUp extends Component{
 
   render(){
     return (
-        <div>
-          <h2>Member registration</h2>
-          <form onSubmit={this.handleSubmit}>
-          <br/>
-            <div>
-              <label>
-                <input placeholder="FirstName" type="text" id="firstname" onChange={this.handleChange}/>
-              </label>
+      <div className="outer">
+        <div className="middle">
+          <div className="inner">
+            <div className="wrapper fadeInDown">
+              <div id="formContent">
+                <h1>Member Registration</h1>
+                <form onSubmit={this.handleSubmit}>
+                  <input type="text" id="firstname" className="fadeIn first" placeholder="FirstName" onChange={this.handleChange}/>
+                  <input type="text" id="lastname" className="fadeIn second" placeholder="LastName" onChange={this.handleChange}/>
+                  <input type="text" id="username" className="fadeIn third" placeholder="Username" onChange={this.handleChange}/>
+                  <input type="text" id="password" className="fadeIn fourth" placeholder="Password" onChange={this.handleChange}/>
+                  <button type="submit" className="fadeIn third" onClick={this.handleSubmit} >Sign up</button>
+                </form>
+                <Link to='/auth/signin'>
+                  Do you already have a account?
+                </Link>
+              </div>
             </div>
-            <div>
-              <label>
-                <input placeholder="LastName" type="password" id="lastname" onChange={this.handleChange}/>
-              </label>
-            </div>
-            <div>
-              <label>
-                <input placeholder="Usuario" type="text" id="username" onChange={this.handleChange}/>
-              </label>
-            </div>
-            <div>
-              <label>
-                <input placeholder="Password" type="text" id="password" onChange={this.handleChange}/>
-              </label>
-            </div>
-            <button onClick={this.handleSubmit} >Sign Up</button>
-          </form>
-          <div>
-          <Link to='/auth/signin'>
-              Do you already have a account?
-          </Link>
           </div>
         </div>
+      </div>
     )
   }
 }
