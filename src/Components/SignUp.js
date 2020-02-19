@@ -1,55 +1,104 @@
 /* global alert */
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
+import { Formik } from 'formik'
+import * as Yup from 'yup'
 import './Welcome.css'
-export default class SignUp extends Component {
-  constructor () {
-    super()
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.state = {
-      username: null,
-      password: null,
-      firstname: null,
-      lastname: null
-    }
-  }
 
-  handleChange = (e) => {
-    this.setState({
-      [e.target.id]: e.target.value
-    })
-  }
+const validation = Yup.object().shape({
+  firstname: Yup.string()
+    .max(12)
+    .required('Must enter name'),
+  lastname: Yup.string()
+    .max(12)
+    .required('Must enter name'),
+  username: Yup.string()
+    .max(10, 'Must be less than 10 caracters')
+    .required('Enter your username'),
+  password: Yup.string()
+    .required('Must enter a password')
+    .min(5, 'Must be atleast longer than 5 characters')
+})
 
-  handleSubmit = (e) => {
-    e.preventDefault()
-    return (
-      alert('Usuario Creado')
-    )
-  }
-
-  render () {
-    return (
-      <div className='outer'>
-        <div className='middle'>
-          <div className='inner'>
-            <div className='wrapper fadeInDown'>
-              <div id='formContent'>
-                <h1>Member Registration</h1>
-                <form onSubmit={this.handleSubmit}>
-                  <input type='text' id='firstname' className='fadeIn first' placeholder='FirstName' onChange={this.handleChange} />
-                  <input type='text' id='lastname' className='fadeIn second' placeholder='LastName' onChange={this.handleChange} />
-                  <input type='text' id='username' className='fadeIn third' placeholder='Username' onChange={this.handleChange} />
-                  <input type='password' id='password' className='fadeIn fourth' placeholder='Password' onChange={this.handleChange} />
-                  <button type='submit' className='fadeIn third' onClick={this.handleSubmit}>Sign up</button>
-                </form>
-                <Link to='/auth/signin'>
+export default function SignUp () {
+  return (
+    <div className='outer'>
+      <div className='middle'>
+        <div className='inner'>
+          <div className='wrapper fadeInDown'>
+            <div id='formContent'>
+              <h1>Member Registration</h1>
+              <Formik
+                initialValues={{ firstname: '', lastname: '', username: '', password: '' }}
+                validationSchema={validation}
+                onSubmit={(values, { setSubmitting, resetForm }) => {
+                  setSubmitting(true)
+                  alert(JSON.stringify({ values }))
+                  resetForm()
+                  setSubmitting(false)
+                }}
+              >
+                {({
+                  values,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting
+                }) => (
+                  <form onSubmit={handleSubmit}>
+                    <input
+                      type='text'
+                      id='firstname'
+                      className='fadeIn first'
+                      placeholder='FirstName'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.firstname}
+                    />
+                    <input
+                      type='text'
+                      id='lastname'
+                      className='fadeIn second'
+                      placeholder='LastName'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.lastname}
+                    />
+                    <input
+                      type='text'
+                      id='username'
+                      className='fadeIn third'
+                      placeholder='Username'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.username}
+                    />
+                    <input
+                      type='password'
+                      id='password'
+                      className='fadeIn fourth'
+                      placeholder='Password'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.password}
+                    />
+                    <button
+                      type='submit'
+                      className='fadeIn third'
+                      disable={isSubmitting}
+                    >
+                      Sign up
+                    </button>
+                  </form>
+                )}
+              </Formik>
+              <Link to='/auth/signin'>
                   Do you already have a account?
-                </Link>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
 }
