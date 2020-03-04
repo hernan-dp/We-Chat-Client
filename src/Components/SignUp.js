@@ -1,9 +1,11 @@
 /* global alert */
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useMutation } from '@apollo/react-hooks'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import './Welcome.css'
+import gql from 'graphql-tag'
 
 const validation = Yup.object().shape({
   firstname: Yup.string()
@@ -20,7 +22,54 @@ const validation = Yup.object().shape({
     .min(5, 'Must be atleast longer than 5 characters')
 })
 
-export default function SignUp () {
+const SIGN_UP = gql`
+  mutation sign_up($data: SignupInput!){
+    signup(data: $data){
+      user{
+        id
+        username
+      }
+      jwt
+    }
+  }
+`
+
+function SignUp () {
+  let [info, setInfo] = useState(false)
+
+  const [signup] = useMutation(SIGN_UP, {
+    onCompleted: RegistrationSuccesful,
+    onError: RegistrationFailure
+  }
+  )
+
+  function RegistrationSuccesful () {
+    setInfo(info = true)
+    return (
+      alert(info),
+      <Link to='/auth/signin'> </Link>
+    )
+  }
+
+  function RegistrationFailure () {
+    setInfo(info = false)
+    return (
+      alert(info),
+      <Link to='/auth/signup'> </Link>
+    )
+  }
+
+  function handleSignUp (values) {
+    return signup(values, {
+      variables: {
+        firstname: values.firstname,
+        lastname: values.lastname,
+        username: values.username,
+        password: values.password
+      }
+    })
+  }
+
   return (
     <div className='outer'>
       <div className='middle'>
@@ -33,8 +82,8 @@ export default function SignUp () {
                 validationSchema={validation}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                   setSubmitting(true)
-                  alert(JSON.stringify({ values }))
-                  resetForm()
+                  handleSignUp(values)
+                  alert(this.state.info)
                   setSubmitting(false)
                 }}
               >
@@ -85,7 +134,7 @@ export default function SignUp () {
                     <button
                       type='submit'
                       className='fadeIn third'
-                      disable={isSubmitting}
+                      disabled={isSubmitting}
                     >
                       Sign up
                     </button>
@@ -102,3 +151,5 @@ export default function SignUp () {
     </div>
   )
 }
+
+export default SignUp
