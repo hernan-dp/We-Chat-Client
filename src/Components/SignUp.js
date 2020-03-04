@@ -44,6 +44,7 @@ function SignUp () {
 
   function RegistrationSuccesful () {
     setError(error = false)
+    alert("anda")
     return (
       <Link to='/auth/signin'> </Link>
     )
@@ -53,17 +54,6 @@ function SignUp () {
     return (
       setError(error = true)
     )
-  }
-
-  function handleSignUp (values) {
-    return signup(values, {
-      variables: {
-        firstname: values.firstname,
-        lastname: values.lastname,
-        username: values.username,
-        password: values.password
-      }
-    })
   }
 
   return (
@@ -76,11 +66,15 @@ function SignUp () {
               {error &&
                 <h3 className='error'>  oh snap! Something went wrong  </h3>}
               <Formik
-                initialValues={{ firstname: '', lastname: '', username: '', password: '' }}
+                initialValues={{ firstName: '', lastName: '', username: '', password: '' }}
                 validationSchema={validation}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                   setSubmitting(true)
-                  handleSignUp(values)
+                  signup({
+                    variables: {
+                      data: values
+                    }
+                  })
                   setSubmitting(false)
                 }}
               >
@@ -94,21 +88,21 @@ function SignUp () {
                   <form onSubmit={handleSubmit}>
                     <input
                       type='text'
-                      id='firstname'
+                      id='firstName'
                       className='fadeIn first'
                       placeholder='FirstName'
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.firstname}
+                      value={values.firstName}
                     />
                     <input
                       type='text'
-                      id='lastname'
+                      id='lastName'
                       className='fadeIn second'
                       placeholder='LastName'
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      value={values.lastname}
+                      value={values.lastName}
                     />
                     <input
                       type='text'
