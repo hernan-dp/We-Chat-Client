@@ -1,4 +1,3 @@
-/* global alert */
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useMutation } from '@apollo/react-hooks'
@@ -35,7 +34,7 @@ const SIGN_UP = gql`
 `
 
 function SignUp () {
-  let [info, setInfo] = useState(false)
+  let [error, setError] = useState(false)
 
   const [signup] = useMutation(SIGN_UP, {
     onCompleted: RegistrationSuccesful,
@@ -44,18 +43,15 @@ function SignUp () {
   )
 
   function RegistrationSuccesful () {
-    setInfo(info = true)
+    setError(error = false)
     return (
-      alert(info),
       <Link to='/auth/signin'> </Link>
     )
   }
 
   function RegistrationFailure () {
-    setInfo(info = false)
     return (
-      alert(info),
-      <Link to='/auth/signup'> </Link>
+      setError(error = true)
     )
   }
 
@@ -77,13 +73,14 @@ function SignUp () {
           <div className='wrapper fadeInDown'>
             <div id='formContent'>
               <h1>Member Registration</h1>
+              {error &&
+                <h3 className='error'>  oh snap! Something went wrong  </h3>}
               <Formik
                 initialValues={{ firstname: '', lastname: '', username: '', password: '' }}
                 validationSchema={validation}
                 onSubmit={(values, { setSubmitting, resetForm }) => {
                   setSubmitting(true)
                   handleSignUp(values)
-                  alert(this.state.info)
                   setSubmitting(false)
                 }}
               >
