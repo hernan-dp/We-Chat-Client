@@ -7,10 +7,10 @@ import './Welcome.css'
 import gql from 'graphql-tag'
 
 const validation = Yup.object().shape({
-  firstname: Yup.string()
+  firstName: Yup.string()
     .max(12)
     .required('Must enter name'),
-  lastname: Yup.string()
+  lastName: Yup.string()
     .max(12)
     .required('Must enter name'),
   username: Yup.string()
@@ -34,25 +34,22 @@ const SIGN_UP = gql`
 `
 
 function SignUp () {
-  let [error, setError] = useState(false)
-
+  const [error, setError] = useState(null)
   const [signup] = useMutation(SIGN_UP, {
-    onCompleted: RegistrationSuccesful,
+    onCompleted: RegistrationSuccess,
     onError: RegistrationFailure
   }
   )
 
-  function RegistrationSuccesful () {
-    setError(error = false)
-    alert("anda")
+  function RegistrationFailure () {
     return (
-      <Link to='/auth/signin'> </Link>
+      setError(true)
     )
   }
 
-  function RegistrationFailure () {
+  function RegistrationSuccess () {
     return (
-      setError(error = true)
+      setError(false)
     )
   }
 
@@ -65,12 +62,14 @@ function SignUp () {
               <h1>Member Registration</h1>
               {error &&
                 <h3 className='error'>  oh snap! Something went wrong  </h3>}
+              {error === false &&
+                <h3 className='correct'>  User created successfully  </h3>}
               <Formik
                 initialValues={{ firstName: '', lastName: '', username: '', password: '' }}
                 validationSchema={validation}
-                onSubmit={(values, { setSubmitting, resetForm }) => {
+                onSubmit={async (values, { setSubmitting, resetForm }) => {
                   setSubmitting(true)
-                  signup({
+                  await signup({
                     variables: {
                       data: values
                     }
