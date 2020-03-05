@@ -1,4 +1,3 @@
-/* global alert */
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Formik } from 'formik'
@@ -27,7 +26,7 @@ const SIGN_IN = gql`
 `
 
 export default function SignIn () {
-  let [error, setError] = useState(false)
+  const [error, setError] = useState(null)
 
   const [signin] = useMutation(SIGN_IN, {
     onCompleted: LoginSuccess,
@@ -36,16 +35,14 @@ export default function SignIn () {
   )
 
   function LoginSuccess () {
-    setError(false)
-    alert('anda')
     return (
-      <Link to='/home'> </Link>
+      setError(false)
     )
   }
 
   function LoginFailed () {
     return (
-      setError(error = true)
+      setError(true)
     )
   }
 
@@ -58,6 +55,8 @@ export default function SignIn () {
               <h1>Sign In</h1>
               {error &&
                 <h3 className='error'>  oh snap! Something went wrong  </h3>}
+              {error === false &&
+                <h3 className='correct'>  Log in successfully </h3>}
               <Formik
                 initialValues={{ username: '', password: '' }}
                 validationSchema={validation}
