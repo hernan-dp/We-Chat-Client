@@ -31,8 +31,7 @@ export default function SignIn () {
   const [signin] = useMutation(SIGN_IN, {
     onCompleted: LoginSuccess,
     onError: LoginFailed
-  }
-  )
+  })
 
   function LoginSuccess () {
     return (
@@ -60,17 +59,13 @@ export default function SignIn () {
               <Formik
                 initialValues={{ username: '', password: '' }}
                 validationSchema={validation}
-                
-                onSubmit={async(values, { setSubmitting, resetForm }) => {
+                onSubmit={async (values, { setSubmitting, resetForm }) => {
                   setSubmitting(true)
-                  const response = await signin({
+                  await signin({
                     variables: {
                       data: values
                     }
                   })
-                  localStorage.setItem('token', response.data.signin.jwt)
-                  localStorage.setItem('user', response.data.signin.user.id)
-                  this.props.history.push('/auth/signup')
                   resetForm()
                   setSubmitting(false)
                 }}
