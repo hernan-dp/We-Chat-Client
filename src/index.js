@@ -11,12 +11,20 @@ import { HttpLink } from 'apollo-link-http'
 
 const cache = new InMemoryCache()
 const link = new HttpLink({
+  headers: { authorization: localStorage.getItem('token')},
   uri: 'http://localhost:3001/graphql'
 })
 
 const client = new ApolloClient({
   cache,
   link
+})
+
+cache.writeData({
+  data: {
+    currentuser: !!localStorage.getItem("token"),
+    
+  }
 })
 
 ReactDOM.render(

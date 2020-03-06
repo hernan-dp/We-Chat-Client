@@ -60,13 +60,17 @@ export default function SignIn () {
               <Formik
                 initialValues={{ username: '', password: '' }}
                 validationSchema={validation}
-                onSubmit={(values, { setSubmitting, resetForm }) => {
+                
+                onSubmit={async(values, { setSubmitting, resetForm }) => {
                   setSubmitting(true)
-                  signin({
+                  const response = await signin({
                     variables: {
                       data: values
                     }
                   })
+                  localStorage.setItem('token', response.data.signin.jwt)
+                  localStorage.setItem('user', response.data.signin.user.id)
+                  this.props.history.push('/auth/signup')
                   resetForm()
                   setSubmitting(false)
                 }}
