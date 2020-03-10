@@ -1,9 +1,10 @@
-/* global alert */
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import './Welcome.css'
+import { useMutation } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 
 const validation = Yup.object().shape({
   username: Yup.string()
@@ -13,7 +14,37 @@ const validation = Yup.object().shape({
     .required('Must enter a password')
 })
 
+const SIGN_IN = gql`
+  mutation sign_in($data: SigninInput!){
+    signin(data: $data){
+      user{
+        id
+      }
+      jwt
+    }
+  }
+`
+
 export default function SignIn () {
+  const [error, setError] = useState(null)
+
+  const [signin] = useMutation(SIGN_IN, {
+    onCompleted: LoginSuccess,
+    onError: LoginFailed
+  })
+
+  function LoginSuccess () {
+    return (
+      setError(false)
+    )
+  }
+
+  function LoginFailed () {
+    return (
+      setError(true)
+    )
+  }
+
   return (
     <div className='outer'>
       <div className='middle'>
@@ -21,12 +52,20 @@ export default function SignIn () {
           <div className='wrapper fadeInDown'>
             <div id='formContent'>
               <h1>Sign In</h1>
+              {error &&
+                <h3 className='error'>  oh snap! Something went wrong  </h3>}
+              {error === false &&
+                <h3 className='correct'>  Log in successfully </h3>}
               <Formik
                 initialValues={{ username: '', password: '' }}
                 validationSchema={validation}
-                onSubmit={(values, { setSubmitting, resetForm }) => {
+                onSubmit={async (values, { setSubmitting, resetForm }) => {
                   setSubmitting(true)
-                  alert(JSON.stringify({ values }))
+                  await signin({
+                    variables: {
+                      data: values
+                    }
+                  })
                   resetForm()
                   setSubmitting(false)
                 }}
