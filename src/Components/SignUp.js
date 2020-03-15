@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { useMutation } from '@apollo/react-hooks'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
@@ -34,6 +34,7 @@ const SIGN_UP = gql`
 `
 
 function SignUp () {
+  const history = useHistory()
   const [error, setError] = useState(null)
   const [signup] = useMutation(SIGN_UP, {
     onCompleted: RegistrationSuccess,
@@ -48,9 +49,14 @@ function SignUp () {
   }
 
   function RegistrationSuccess () {
+    setError(false)
     return (
-      setError(false)
+      setTimeout(Redirect, 1500)
     )
+  }
+
+  function Redirect () {
+    history.push('/auth/signin')
   }
 
   return (

@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import './Welcome.css'
 import { useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
+import * as Storage from './Storage'
 
 const validation = Yup.object().shape({
   username: Yup.string()
@@ -27,17 +28,15 @@ const SIGN_IN = gql`
 
 export default function SignIn () {
   const [error, setError] = useState(null)
-
+  const history = useHistory()
   const [signin] = useMutation(SIGN_IN, {
     onCompleted: LoginSuccess,
     onError: LoginFailed
-  }
-  )
-
-  function LoginSuccess () {
-    return (
-      setError(false)
-    )
+  })
+  function LoginSuccess ({ signin }) {
+    Storage.setToken(signin.jwt)
+    setError(false)
+    history.push('/home')
   }
 
   function LoginFailed () {
@@ -60,15 +59,14 @@ export default function SignIn () {
               <Formik
                 initialValues={{ username: '', password: '' }}
                 validationSchema={validation}
-                onSubmit={(values, { setSubmitting, resetForm }) => {
+                onSubmit={async (values, { setSubmitting }) => {
                   setSubmitting(true)
+                  await
                   signin({
                     variables: {
                       data: values
                     }
                   })
-                  resetForm()
-                  setSubmitting(false)
                 }}
               >
                 {({

@@ -7,7 +7,17 @@ body {
   height: 100vh;
 }
 
-h2 {
+h4{
+  font-size: 20px;
+  color: #000000;
+}
+
+h3{
+  font-size: 30px;
+  color: #000000;
+}
+
+h2{
   text-align: center;
   font-size: 16px;
   font-weight: 600;
@@ -111,7 +121,7 @@ h1{
 
 /* FORM TYPOGRAPHY*/
 
-input[type=button], button[type=submit], input[type=reset]  {
+input[type=button], button[type=submit], input[type=reset], button[type=logout]  {
   background-color: #56baed;
   border: none;
   color: white;
@@ -135,6 +145,10 @@ input[type=button], button[type=submit], input[type=reset]  {
 
 input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
   background-color: #39ace7;
+}
+
+button[type=logout]{
+  background-color: #da1111;
 }
 
 

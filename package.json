@@ -8,6 +8,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "apollo-cache-inmemory": "^1.6.5",
+    "apollo-cache-persist": "^0.1.1",
     "apollo-client": "^2.6.8",
     "apollo-link-http": "^1.5.16",
     "formik": "^2.1.4",
