@@ -9,16 +9,31 @@ import { ApolloProvider } from 'react-apollo'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import * as Storage from './Components/Storage'
-import { CachePersistor } from 'apollo-cache-persist'
+import { persistCache } from 'apollo-cache-persist'
+import { ApolloLink } from 'apollo-link'
 
 const cache = new InMemoryCache()
 
-export const persistor = new CachePersistor({ cache, storage: window.localStorage })
-
-const link = new HttpLink({
-  uri: 'http://localhost:3001/graphql',
-  headers: { Authorization: `Bearer ${Storage.getToken()}` }
+persistCache({
+  cache,
+  storage: window.localStorage
 })
+
+const httpLink = new HttpLink({
+  uri: 'http://localhost:3001/graphql'
+})
+
+const middlewareLink = new ApolloLink((operation, forward) => {
+  const token = Storage.getToken()
+  operation.setContext({
+    headers: {
+      authorization: token ? `Bearer ${token}` : null
+    }
+  })
+  return forward(operation)
+})
+
+const link = middlewareLink.concat(httpLink)
 
 export const client = new ApolloClient({
   cache,
