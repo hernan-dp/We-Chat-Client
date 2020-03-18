@@ -6,11 +6,13 @@ import form from '../form.module.css'
 import { useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import * as Storage from '../Storage'
+import Error from '../Error'
 
 const validation = Yup.object().shape({
   username: Yup.string()
+    .min(1, 'Must have more than 1 caracter')
     .max(10, 'Must be less than 10 caracters')
-    .required('Enter your username'),
+    .required('Username is required'),
   password: Yup.string()
     .required('Must enter a password')
 })
@@ -67,30 +69,38 @@ export default function SignIn () {
             >
               {({
                 values,
+                errors,
+                touched,
                 handleChange,
                 handleBlur,
                 handleSubmit,
                 isSubmitting
               }) => (
                 <form onSubmit={handleSubmit}>
-                  <input
-                    type='text'
-                    className={form.form}
-                    id='username'
-                    placeholder='Enter your username'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.username}
-                  />
-                  <input
-                    type='password'
-                    className={form.form}
-                    id='password'
-                    placeholder='Password'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.password}
-                  />
+                  <div>
+                    <input
+                      type='text'
+                      className={touched.username && errors.username ? form.haserror : form.form}
+                      id='username'
+                      placeholder='Enter your username'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.username}
+                    />
+                    <Error touched={touched.username} message={errors.username} />
+                  </div>
+                  <div>
+                    <input
+                      type='password'
+                      className={touched.password && errors.password ? form.haserror : form.form}
+                      id='password'
+                      placeholder='Password'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.password}
+                    />
+                    <Error touched={touched.password} message={errors.password} />
+                  </div>
                   <button
                     type='submit'
                     className={form.button}

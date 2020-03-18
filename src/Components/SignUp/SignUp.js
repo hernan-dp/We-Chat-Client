@@ -5,6 +5,7 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import form from '../form.module.css'
 import gql from 'graphql-tag'
+import Error from '../Error'
 
 const validation = Yup.object().shape({
   firstName: Yup.string()
@@ -18,7 +19,7 @@ const validation = Yup.object().shape({
     .required('Enter your username'),
   password: Yup.string()
     .required('Must enter a password')
-    .min(5, 'Must be atleast longer than 5 characters')
+    .min(5, 'Password too short')
 })
 
 const SIGN_UP = gql`
@@ -84,48 +85,62 @@ function SignUp () {
             >
               {({
                 values,
+                errors,
+                touched,
                 handleChange,
                 handleBlur,
                 handleSubmit,
                 isSubmitting
               }) => (
                 <form onSubmit={handleSubmit}>
-                  <input
-                    type='text'
-                    className={form.form}
-                    id='firstName'
-                    placeholder='FirstName'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.firstName}
-                  />
-                  <input
-                    type='text'
-                    className={form.form}
-                    id='lastName'
-                    placeholder='LastName'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.lastName}
-                  />
-                  <input
-                    type='text'
-                    className={form.form}
-                    id='username'
-                    placeholder='Username'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.username}
-                  />
-                  <input
-                    type='password'
-                    className={form.form}
-                    id='password'
-                    placeholder='Password'
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.password}
-                  />
+                  <div>
+                    <input
+                      type='text'
+                      className={touched.firstName && errors.firstName ? form.haserror : form.form}
+                      id='firstName'
+                      placeholder='FirstName'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.firstName}
+                    />
+                    <Error touched={touched.firstName} message={errors.firstName} />
+                  </div>
+                  <div>
+                    <input
+                      type='text'
+                      className={touched.lastName && errors.lastName ? form.haserror : form.form}
+                      id='lastName'
+                      placeholder='LastName'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.lastName}
+                    />
+                    <Error touched={touched.lastName} message={errors.lastName} />
+                  </div>
+                  <div>
+                    <input
+                      type='text'
+                      className={touched.username && errors.username ? form.haserror : form.form}
+                      id='username'
+                      placeholder='Username'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.username}
+                    />
+                    <Error touched={touched.username} message={errors.username} />
+                  </div>
+                  <div>
+                    <input
+                      type='password'
+                      className={touched.password && errors.password ? form.haserror : form.form}
+                      id='password'
+                      placeholder='Password'
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.password}
+                    />
+                    <Error touched={touched.password} message={errors.password} />
+                  </div>
                   <button
                     type='submit'
                     className={form.button}
