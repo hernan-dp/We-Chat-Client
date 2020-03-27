@@ -1,9 +1,10 @@
 .ChatGlobal{
-  margin-top: 4vh;
+  background-color: #56baed;  
 }
 
 .ChatText{
   background-color: #56baed;
+  padding-top: 4vh;
   position: absolute;
   height: 100%;
   width: 100%;
