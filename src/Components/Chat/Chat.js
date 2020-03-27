@@ -1,49 +1,90 @@
 import React from 'react'
 import styles from './Chat.module.css'
 
-import {Row,Col,Container,Button,Navbar,Form} from 'react-bootstrap'
-import {uuid} from 'uuid'
+import { Formik } from 'formik'
 
-function Chat () {
+import { Container, Button, Navbar, Form } from 'react-bootstrap'
+import { uuid } from 'uuid'
 
+import gql from 'graphql-tag'
+import { useMutation } from '@apollo/react-hooks'
+
+const SEND_MESSAGE = gql`
+  mutation sendMessage($input: MessageInput!) {
+    sendMessage(input: $input) {
+      sender
+      channel
+      text
+    }
+  }
+`
+
+export default function Chat () {
+  const sendMessageOk = ({ sendMessage }) => {
+    console.log('success')
+  }
+  const sendMessageError = (error) => {
+    console.log(error)
+  }
+
+  const [sendMessage] = useMutation(SEND_MESSAGE, {
+    onCompleted: sendMessageOk,
+    onError: sendMessageError
+  })
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log('not done yet')
   }
 
-  return(
+  return (
     <div className={styles.ChatGlobal}>
       <div className={styles.ChatText}>
-        <Container className="w-100 d-flex bg-light page" style={{ height: "90vh", overflowX: "hidden" }}>
-          <ul className="list-group" style={{ marginBottom: "60px" }}>
-                    
-          </ul>
+        <Container className='w-100 d-flex bg-light page' style={{ height: '90vh', overflowX: 'hidden' }}>
+          <ul className='list-group' style={{ marginBottom: '60px' }} />
         </Container>
       </div>
 
-      <Navbar fixed="bottom">
+      <Navbar fixed='bottom'>
         <Container>
-          <Form
-            inline
-            className="w-100 d-flex justify-content-between align-items-center"
-            onSubmit = {handleSubmit}
+          <Formik
+            initialValues={{ sender: 'joa', channel: 'test', text: '' }}
+            onSubmit={async (values, { setSubmitting, resetForm }) => {
+              setSubmitting(true)
+              await sendMessage({ variables: { input: values } })
+              resetForm()
+              setSubmitting(false)
+            }}
           >
-            <Form.Group style={{ flex: 1 }}>
-              <Form.Control
-                style={{ width: "100%" }}
-                required
-                type="text"
-                placeholder="Type Message here..."
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Send
-            </Button>
-          </Form>
+            {({
+              values,
+              handleChange,
+              handleSubmit,
+              isSubmitting
+            }) => (
+              <Form
+                inline
+                className='w-100 d-flex justify-content-between align-items-center'
+                onSubmit={handleSubmit}
+              >
+                <Form.Group style={{ flex: 1 }}>
+                  <Form.Control
+                    name='text'
+                    style={{ width: '100%' }}
+                    required
+                    type='text'
+                    onChange={handleChange}
+                    value={values.text}
+                    placeholder='Type Message here...'
+                  />
+                </Form.Group>
+                <Button variant='primary' type='submit' disabled={isSubmitting}>
+                  Send
+                </Button>
+              </Form>
+            )}
+          </Formik>
         </Container>
       </Navbar>
     </div>
   )
-} 
-
-export default Chat
+}
