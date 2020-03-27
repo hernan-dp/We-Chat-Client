@@ -1,0 +1,14 @@
+.ChatGlobal{
+  margin-top: 4vh;
+}
+
+.ChatText{
+  background-color: #56baed;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.ChatGeneral{
+  background-color: azure;
+}

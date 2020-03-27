@@ -11,6 +11,7 @@ import { HttpLink } from 'apollo-link-http'
 import * as Storage from './Components/Storage'
 import { persistCache } from 'apollo-cache-persist'
 import { ApolloLink } from 'apollo-link'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const cache = new InMemoryCache()
 
