@@ -6,6 +6,7 @@ import { uuid } from 'uuid'
 import gql from 'graphql-tag'
 import { useMutation, useSubscription } from '@apollo/react-hooks'
 import SubsciptionComponent from './SubsciptionComponent'
+import * as Storage from '../Storage'
 
 const SEND_MESSAGE = gql`
   mutation sendMessage($input: MessageInput!) {
@@ -48,7 +49,7 @@ export default function Chat () {
       <Navbar fixed='bottom'>
         <Container>
           <Formik
-            initialValues={{ sender: 'hernan', channel: 'test', text: '' }}
+            initialValues={{ sender: Storage.getUsername(), channel: 'test', text: '' }}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               setSubmitting(true)
               await sendMessage({ variables: { input: values } })

@@ -23,6 +23,7 @@ export default function Home () {
   if (loading) return <p>Loading ..</p>
   if (error) return <p>ERROR</p>
   if (!data) return history.push('/auth/signin')
+  if (data) Storage.setUsername(data.currentUser.username)
 
   function logout () {
     client.clearStore()

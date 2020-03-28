@@ -10,3 +10,15 @@ export function getToken () {
 export function removeToken () {
   return window.localStorage.removeItem('token')
 }
+
+export function setUsername (username) {
+  window.localStorage.setItem('username', username)
+}
+
+export function getUsername () {
+  return window.localStorage.getItem('username')
+}
+
+export function removeUsername () {
+  return window.localStorage.removeItem('username')
+}
