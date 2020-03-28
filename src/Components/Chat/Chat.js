@@ -30,20 +30,18 @@ export default function Chat () {
     onError: sendMessageError
   })
 
-
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log('not done yet')
   }
 
   const channel = 'test'
-  
+
   return (
     <div className={styles.ChatGlobal}>
       <div className={styles.ChatText}>
-        
         <Container className='w-100 d-flex bg-light page' style={{ height: '90vh', overflowX: 'hidden' }}>
-          <SubsciptionComponent channel={channel} ></SubsciptionComponent>
+          <SubsciptionComponent channel={channel} />
         </Container>
       </div>
 

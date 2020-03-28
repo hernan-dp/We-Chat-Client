@@ -10,10 +10,10 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import * as Storage from './Components/Storage'
 import { persistCache } from 'apollo-cache-persist'
-import { ApolloLink } from 'apollo-link'
+import { ApolloLink, split } from 'apollo-link'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { WebSocketLink } from 'apollo-link-ws'
-import { split } from 'apollo-link'
+
 import { getMainDefinition } from 'apollo-utilities'
 
 const cache = new InMemoryCache()
@@ -28,7 +28,7 @@ const httpLink = new HttpLink({
 })
 
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:3001/graphql`,
+  uri: 'ws://localhost:3001/graphql',
   options: {
     reconnect: true
   }
@@ -44,20 +44,18 @@ const middlewareLink = new ApolloLink((operation, forward) => {
   return forward(operation)
 })
 
-
-
 const serverlink = middlewareLink.concat(httpLink)
 
 const link = split(
   ({ query }) => {
-    const definition = getMainDefinition(query);
+    const definition = getMainDefinition(query)
     return (
       definition.kind === 'OperationDefinition' &&
       definition.operation === 'subscription'
     )
   },
   wsLink,
-  serverlink,
+  serverlink
 )
 
 export const client = new ApolloClient({
