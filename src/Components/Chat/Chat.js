@@ -1,13 +1,11 @@
 import React from 'react'
 import styles from './Chat.module.css'
-
 import { Formik } from 'formik'
-
 import { Container, Button, Navbar, Form } from 'react-bootstrap'
 import { uuid } from 'uuid'
-
 import gql from 'graphql-tag'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation, useSubscription } from '@apollo/react-hooks'
+import SubsciptionComponent from './SubsciptionComponent'
 
 const SEND_MESSAGE = gql`
   mutation sendMessage($input: MessageInput!) {
@@ -31,23 +29,28 @@ export default function Chat () {
     onCompleted: sendMessageOk,
     onError: sendMessageError
   })
+
+
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log('not done yet')
   }
 
+  const channel = 'test'
+  
   return (
     <div className={styles.ChatGlobal}>
       <div className={styles.ChatText}>
+        
         <Container className='w-100 d-flex bg-light page' style={{ height: '90vh', overflowX: 'hidden' }}>
-          <ul className='list-group' style={{ marginBottom: '60px' }} />
+          <SubsciptionComponent channel={channel} ></SubsciptionComponent>
         </Container>
       </div>
 
       <Navbar fixed='bottom'>
         <Container>
           <Formik
-            initialValues={{ sender: 'joa', channel: 'test', text: '' }}
+            initialValues={{ sender: 'hernan', channel: 'test', text: '' }}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               setSubmitting(true)
               await sendMessage({ variables: { input: values } })

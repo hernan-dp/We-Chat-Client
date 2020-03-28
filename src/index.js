@@ -12,6 +12,9 @@ import * as Storage from './Components/Storage'
 import { persistCache } from 'apollo-cache-persist'
 import { ApolloLink } from 'apollo-link'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import { WebSocketLink } from 'apollo-link-ws'
+import { split } from 'apollo-link'
+import { getMainDefinition } from 'apollo-utilities'
 
 const cache = new InMemoryCache()
 
@@ -24,6 +27,13 @@ const httpLink = new HttpLink({
   uri: 'http://localhost:3001/graphql'
 })
 
+const wsLink = new WebSocketLink({
+  uri: `ws://localhost:3001/graphql`,
+  options: {
+    reconnect: true
+  }
+})
+
 const middlewareLink = new ApolloLink((operation, forward) => {
   const token = Storage.getToken()
   operation.setContext({
@@ -34,7 +44,21 @@ const middlewareLink = new ApolloLink((operation, forward) => {
   return forward(operation)
 })
 
-const link = middlewareLink.concat(httpLink)
+
+
+const serverlink = middlewareLink.concat(httpLink)
+
+const link = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    )
+  },
+  wsLink,
+  serverlink,
+)
 
 export const client = new ApolloClient({
   cache,
