@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import gql from 'graphql-tag'
 import { useSubscription } from '@apollo/react-hooks'
+import * as Storage from '../Storage'
+import styles from './Chat.module.css'
 
 const SUBSCRIBE_MSG = gql`
 subscription messageRecieved($channel: String!){
@@ -13,7 +15,12 @@ subscription messageRecieved($channel: String!){
 `
 
 function ListItem ({ message }) {
-  return <li>{message.sender}: {message.text}</li>
+  let alignment = ''
+  if (Storage.getUsername() === message.sender) {
+    alignment = 'right'
+  }
+
+  return <div style={{ textAlign: alignment }}>{message.sender}: {message.text}</div>
 }
 
 function MessageList ({ messagelist }) {
@@ -21,7 +28,7 @@ function MessageList ({ messagelist }) {
     <ListItem key={index} message={message} />
   )
   return (
-    <ul>
+    <ul className={styles.ChatList}>
       {listItems}
     </ul>
   )

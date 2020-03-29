@@ -41,7 +41,7 @@ export default function Chat () {
   return (
     <div className={styles.ChatGlobal}>
       <div className={styles.ChatText}>
-        <Container className='w-100 d-flex bg-light page' style={{ height: '90vh', overflowX: 'hidden' }}>
+        <Container className='w-100 bg-light page' style={{ height: '85vh', overflowX: 'hidden' }}>
           <SubsciptionComponent channel={channel} />
         </Container>
       </div>
