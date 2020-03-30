@@ -7,6 +7,8 @@ import gql from 'graphql-tag'
 import { useMutation, useSubscription } from '@apollo/react-hooks'
 import SubsciptionComponent from './SubsciptionComponent'
 import * as Storage from '../Storage'
+import { client } from '../../index'
+import { useHistory } from 'react-router-dom'
 
 const SEND_MESSAGE = gql`
   mutation sendMessage($input: MessageInput!) {
@@ -19,6 +21,15 @@ const SEND_MESSAGE = gql`
 `
 
 export default function Chat () {
+
+  const history = useHistory()
+
+  function logout () {
+    client.clearStore()
+    Storage.removeToken()
+    history.push('/auth/signin')
+  }
+
   const sendMessageOk = ({ sendMessage }) => {
     console.log('success')
   }
@@ -81,6 +92,9 @@ export default function Chat () {
                 </Form.Group>
                 <Button variant='primary' type='submit' disabled={isSubmitting}>
                   Send
+                </Button>
+                <Button variant='primary' onClick={logout}>
+                  Log Out
                 </Button>
               </Form>
             )}
