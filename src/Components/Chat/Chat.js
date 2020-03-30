@@ -2,9 +2,8 @@ import React from 'react'
 import styles from './Chat.module.css'
 import { Formik } from 'formik'
 import { Container, Button, Navbar, Form } from 'react-bootstrap'
-import { uuid } from 'uuid'
 import gql from 'graphql-tag'
-import { useMutation, useSubscription } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/react-hooks'
 import SubsciptionComponent from './SubsciptionComponent'
 import * as Storage from '../Storage'
 
@@ -19,23 +18,7 @@ const SEND_MESSAGE = gql`
 `
 
 export default function Chat () {
-  const sendMessageOk = ({ sendMessage }) => {
-    console.log('success')
-  }
-  const sendMessageError = (error) => {
-    console.log(error)
-  }
-
-  const [sendMessage] = useMutation(SEND_MESSAGE, {
-    onCompleted: sendMessageOk,
-    onError: sendMessageError
-  })
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    console.log('not done yet')
-  }
-
+  const [sendMessage] = useMutation(SEND_MESSAGE)
   const channel = 'test'
 
   return (

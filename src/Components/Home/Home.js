@@ -44,7 +44,7 @@ export default function Home () {
                 <h3>First Name: {data.currentUser.firstName}</h3>
                 <h3>Last Name: {data.currentUser.lastName}</h3>
                 <h2 className={home.index}>id: {data.currentUser.id}</h2>
-                <button className={home.chatbutton} onClick={()=>history.push('/chat')}>Chat!</button>
+                <button className={home.chatbutton} onClick={() => history.push('/chat')}>Chat!</button>
                 <button className={home.button} onClick={logout}>Log Out</button>
               </div>
             </div>
