@@ -15,12 +15,18 @@ subscription messageRecieved($channel: String!){
 `
 
 function ListItem ({ message }) {
-  let alignment = ''
+  let alignment = 'flex-start'
+  let messageStyle = styles.GuestMessage
   if (Storage.getUsername() === message.sender) {
-    alignment = 'right'
+    messageStyle = styles.HostMessage
+    alignment = 'flex-end'
   }
 
-  return <div style={{ textAlign: alignment }}>{message.sender}: {message.text}</div>
+  return (
+    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: alignment }}>
+      <div className={messageStyle}>{message.sender}: <br />{message.text}</div>
+    </div>
+  )
 }
 
 function MessageList ({ messagelist }) {

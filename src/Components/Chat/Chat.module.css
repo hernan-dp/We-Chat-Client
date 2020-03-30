@@ -15,9 +15,30 @@
 }
 
 .ChatList{
+  display: flex;
+  flex-direction: column;
   padding-inline-start: 0%;
   margin-top: 2%;
-  margin-left: 15%;
-  margin-right: 15%;
+  margin-left: 5%;
+  margin-right: 5%;
   margin-bottom: 2%;
+}
+
+.HostMessage{
+  display: flex;
+  background: #00CC47;
+  border: 1px solid #00CC47;
+  padding: 2%;
+ 	color: #fff;
+  border-radius: 10px;
+}
+
+.GuestMessage {
+  display: flex;
+  border: 1px solid #007AFF;
+  background: #007AFF;
+  padding: 2%;
+  color: #fff;
+  text-align: left;
+  border-radius: 10px;
 }
