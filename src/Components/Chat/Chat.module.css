@@ -1,0 +1,66 @@
+.ChatGlobal{
+  background-color: #56baed;  
+}
+
+.ChatBox{
+  background-color: #56baed;
+  padding-top: 4vh;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.ChatGeneral{
+  background-color: azure;
+}
+
+.ChatList{
+  display: flex;
+  flex-direction: column;
+  padding-inline-start: 0%;
+  margin-top: 2%;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 2%;
+}
+
+.HostMessage{
+  display: flex;
+  background: rgb(88, 158, 233);
+  padding: 1%;
+  border-radius: 10px;
+  margin-bottom: 1%;
+}
+
+.GuestMessage {
+  display: flex;
+  background: rgb(194, 197, 201);
+  padding: 1%;
+  text-align: left;
+  border-radius: 10px;
+  margin-bottom: 1%;
+}
+
+.senderText{
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.text{
+  color: rgb(0, 0, 0);
+  font-size: 18px;
+}
+
+.button{
+  color: white;
+  padding: 15px 80px;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 5px 5px 5px 5px; 
+  margin-left: -100px;
+  float:right
+}
+
+
