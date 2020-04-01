@@ -24,7 +24,10 @@ function ListItem ({ message }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: alignment }}>
-      <div className={messageStyle}>{message.sender}: <br />{message.text}</div>
+      <div className={messageStyle}>
+        <h4 className={styles.senderText}>{message.sender}: </h4>
+        <h4 className={styles.text}><br />{message.text}</h4>
+      </div>
     </div>
   )
 }
